@@ -14,11 +14,12 @@ class Settings(BaseSettings):
     # CORS
     FRONTEND_URL: str = "http://localhost:3000"
     ALLOWED_ORIGINS: List[str] = [
-        "http://localhost:3000",
-        "http://localhost:8000",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:8000"
-    ]
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8080",
+    "https://vehicle-frontend-production-64a7.up.railway.app"  # ← AGREGAR ESTA LÍNEA
+]
     
     # App
     PROJECT_NAME: str = "Vehicle Management API"
