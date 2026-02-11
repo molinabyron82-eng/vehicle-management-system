@@ -101,6 +101,18 @@ async def root():
     }
 
 
+# ✅ CORREGIDO: Agregado soporte para HEAD (UptimeRobot)
 @app.get("/health", tags=["Health"])
+@app.head("/health", tags=["Health"])
 async def health_check():
-    return {"status": "healthy"}
+    """
+    Health check endpoint - Soporta GET y HEAD para monitoreo.
+    
+    UptimeRobot y otros servicios de monitoreo usan HEAD para verificar
+    que el servicio está activo sin descargar el contenido completo.
+    """
+    return {
+        "status": "healthy",
+        "service": "vehicle-management-api",
+        "version": settings.VERSION
+    }
