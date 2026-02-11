@@ -8,18 +8,21 @@ router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 
 # Base de datos de usuarios en memoria (para demostración)
 # En producción, esto debería estar en una base de datos real
-USERS_DB = {
-    "admin": {
-        "username": "admin",
-        "password": get_password_hash("admin123"),
-        "role": "ADMIN"
-    },
-    "usuario": {
-        "username": "usuario",
-        "password": get_password_hash("user123"),
-        "role": "USUARIO"
+# Los hashes se generan cuando se necesitan para evitar problemas en tiempo de importación
+def get_users_db():
+    """Retorna la base de datos de usuarios con contraseñas hasheadas"""
+    return {
+        "admin": {
+            "username": "admin",
+            "password": get_password_hash("admin123"),
+            "role": "ADMIN"
+        },
+        "usuario": {
+            "username": "usuario",
+            "password": get_password_hash("user123"),
+            "role": "USUARIO"
+        }
     }
-}
 
 
 @router.post("/login", response_model=TokenResponse, summary="Iniciar sesión")
@@ -31,6 +34,7 @@ async def login(credentials: LoginRequest):
     - admin / admin123 (rol ADMIN)
     - usuario / user123 (rol USUARIO)
     """
+    USERS_DB = get_users_db()
     user = USERS_DB.get(credentials.username)
     
     if not user or not verify_password(credentials.password, user["password"]):
